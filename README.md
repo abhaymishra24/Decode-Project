@@ -10,4 +10,7 @@ This project involves building a platform where users can create and participate
 - Gain a better understanding of various topics and coding problems.
 - Enhance your ability to communicate and explain concepts clearly and confidently.
 - Share your ideas and thoughts with teammates and receive valuable feedback.
+
+### Thank you for visit on this repository😊
+Feel free to explore my other repositories and reach out to me for collaborations or discussions on new idea and projects.🤝🧑‍💻
   
