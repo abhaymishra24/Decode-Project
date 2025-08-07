@@ -1,4 +1,4 @@
 ## Decode-Project 
 
 ### Project description 
-The projects based on debate and coding session organise platform.
+This project involves building a platform where users can create and participate in debate sessions with friends, classmates, or colleagues on various topics, ideas, and technologies. The platform also allows users to study, solve, and discuss programming problems in real-time. It is designed for a wide range of users, including school students, college students, and company employees.
