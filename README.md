@@ -5,4 +5,9 @@ This project involves building a platform where users can create and participate
 
 ### Objective of projects 
 
-- 
+- Practice your communication skill and enhance your communication ability.
+- Build your confidence on vocabulary and word selection for any topics.
+- Better understanding on any topic and coding problems.
+- Build your confidence and clarity on communication and explanation.
+- Share your thoughts and ideas to your teammates and get feedback from them.
+  
