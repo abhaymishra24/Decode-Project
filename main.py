@@ -86,3 +86,55 @@ def register():
     return jsonify({'message': 'User registered successfully!'})
 
 @app.route('/login', methods=['POST'])
+
+def login():
+    data = request.get_json()
+    user = User.query.filter_by(username=data['username']).first()
+    if not user or not check_password_hash(user.password, data['password']):
+        return jsonify({'message': 'Invalid credentials!'}), 401
+    token = jwt.encode({'public_id': user.public_id, 'exp': datetime.utcnow() + app.config['JWT_ACCESS_TOKEN_EXPIRES']}, app.config['JWT_SECRET_KEY'], algorithm="HS256")
+    return jsonify({'token': token})
+
+@app.route('/debates', methods=['POST'])
+@token_required
+def create_debate(current_user):
+    title = request.form.get('title')
+    description = request.form.get('description')
+    file = request.files.get('attachment')
+    filename = None
+    if file and allowed_file(file.filename):
+        filename = f"{uuid.uuid4().hex}_{file.filename}"
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    new_debate = Debate(title=title, description=description, user_id=current_user.id, attachment=filename)
+    db.session.add(new_debate)
+    db.session.commit()
+    return jsonify({'message': 'Debate created successfully!'})
+@app.route('/debates', methods=['GET'])
+def get_debates():
+    debates = Debate.query.all()
+    output = []
+    for debate in debates:
+        debate_data = {
+            'id': debate.id,
+            'title': debate.title,
+            'description': debate.description,
+            'created_at': debate.created_at,
+            'creator': debate.creator.username,
+            'attachment': debate.attachment
+        }
+        output.append(debate_data)
+    return jsonify({'debates': output})
+@app.route('/debates/<int:debate_id>/vote', methods=['POST'])
+@token_required
+def vote_debate(current_user, debate_id):
+    data = request.get_json()
+    debate = Debate.query.get_or_404(debate_id)
+    existing_vote = Vote.query.filter_by(debate_id=debate.id, user_id=current_user.id).first()
+    if existing_vote:
+        return jsonify({'message': 'You have already voted on this debate!'}), 400
+    if data['vote_type'] not in ['upvote', 'downvote']:
+        return jsonify({'message': 'Invalid vote type!'}), 400
+    new_vote = Vote(debate_id=debate.id, user_id=current_user.id, vote_type=data['vote_type'])
+    db.session.add(new_vote)
+    db.session.commit()
+    return jsonify({'message': 'Vote recorded successfully!'})
