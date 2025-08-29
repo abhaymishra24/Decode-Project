@@ -30,8 +30,10 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'docx'}
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -47,6 +49,8 @@ def token_required(f):
             return jsonify({'message': 'Token is invalid!'}), 401
         return f(current_user, *args, **kwargs)
     return decorated
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
@@ -54,6 +58,8 @@ class User(db.Model):
     password = db.Column(db.String(80))
     debates = db.relationship('Debate', backref='creator', lazy=True)
     votes = db.relationship('Vote', backref='voter', lazy=True)
+    
+    
 class Debate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
@@ -62,3 +68,21 @@ class Debate(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     votes = db.relationship('Vote', backref='debate', lazy=True)
     attachment = db.Column(db.String(100), nullable=True)
+    
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    debate_id = db.Column(db.Integer, db.ForeignKey('debate.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    vote_type = db.Column(db.String(10))  # 'upvote' or 'downvote'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+    new_user = User(public_id=str(uuid.uuid4()), username=data['username'], password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'message': 'User registered successfully!'})
+
+@app.route('/login', methods=['POST'])
