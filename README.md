@@ -2,7 +2,7 @@
 
 This project involves building a platform where users can create and participate in debate sessions with friends, classmates, or colleagues on various topics, ideas, and technologies. The platform also allows users to study, solve, and discuss programming problems in real-time. It is designed for a wide range of users, including school students, college students, and company employees. On this platform, users can book debate sessions and create virtual rooms to discuss any topic with friends or classmates.
 
-![Standpickup logo](https://github.com/abhaymishra24/Decode-Project/blob/main/debate.jpg)
+![Decode logo](https://github.com/abhaymishra24/Decode-Project/blob/main/debate.jpg)
 
 ### Objective of project✍️
 

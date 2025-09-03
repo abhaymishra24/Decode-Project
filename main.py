@@ -138,3 +138,9 @@ def vote_debate(current_user, debate_id):
     db.session.add(new_vote)
     db.session.commit()
     return jsonify({'message': 'Vote recorded successfully!'})
+
+def number_of_upvotes(debate_id):
+    return Vote.query.filter_by(debate_id=debate_id, vote_type='upvote').count()
+
+def number_of_downvotes(debate_id):
+    return Vote.query.filter_by(debate_id=debate_id, vote_type='downvote').count()
