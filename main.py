@@ -4,17 +4,17 @@
 
 # write apis for user registration, login, creating debates, viewing debates, and voting on debates
 
-from flask import Flask, request, jsonify, session
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import timedelta
-from flask_cors import CORS
-import os
-import jwt
-from functools import wraps
-from datetime import datetime, timedelta
-import uuid 
-from flask_migrate import Migrate
+# from flask import Flask, request, jsonify, session
+# from flask_sqlalchemy import SQLAlchemy
+# from werkzeug.security import generate_password_hash, check_password_hash
+# from datetime import timedelta
+# from flask_cors import CORS
+# import os
+# import jwt
+# from functools import wraps
+# from datetime import datetime, timedelta
+# import uuid 
+# from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app)
